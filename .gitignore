@@ -1,13 +1,15 @@
-/target
-/classes
-/checkouts
-profiles.clj
-pom.xml
-pom.xml.asc
-*.jar
-*.class
+/out/
+/resources/public/js/compiled/
+/target/
+/*-init.clj
+/*.log
+
+# Leiningen
 /.lein-*
 /.nrepl-port
-/.prepl-port
-.hgignore
-.hg/
+
+# Node.js dependencies
+/node_modules/
+
+# shadow-cljs cache, port files
+/.shadow-cljs/

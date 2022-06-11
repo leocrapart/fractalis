@@ -1,11 +1,4 @@
-(ns fractalis.core
-  (:gen-class))
-
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
-
+(ns fractalis.fractal)
 
 
 (defn next-complex-number [z c]
@@ -91,7 +84,3 @@ ensemble-mandelbrot-test
 (write-complex z2-test)
 (write-complex z3-test)
 (write-complex z4-test)
-
-
-
-
