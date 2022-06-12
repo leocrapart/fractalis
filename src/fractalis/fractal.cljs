@@ -1,32 +1,33 @@
 (ns fractalis.fractal)
 
-
-(defn next-complex-number [z c]
-	(add-complex (multiply-complex z z) c))
-
-
 (defn add-complex [z1 z2]
-	{:real (+ (z1 :real) (z2 :real))
-	 :imaginary (+ (z1 :imaginary) (z2 :imaginary))})
+  {:real (+ (z1 :real) (z2 :real))
+   :imaginary (+ (z1 :imaginary) (z2 :imaginary))})
+
 
 (defn multiply-complex [z1 z2]
-	{:real (- (* (z1 :real) (z2 :real))
-						(* (z1 :imaginary) (z2 :imaginary)))
-	 :imaginary (+ (* (z1 :real) (z2 :imaginary))
-	 							 (* (z1 :imaginary) (z2 :real)))})
+  {:real (- (* (z1 :real) (z2 :real))
+            (* (z1 :imaginary) (z2 :imaginary)))
+   :imaginary (+ (* (z1 :real) (z2 :imaginary)
+                  (* (z1 :imaginary) (z2 :real))))})
+
+
+(defn next-complex-number [z c]
+  (add-complex (multiply-complex z z) c))
+
 
 
 (defn ensemble-mandelbrot
-	([c n]
-		(let [z0 {:real 0 :imaginary 0}]
-			(ensemble-mandelbrot [z0] c n)))
-	([ensemble-precedent c n]
-		(if (= n 0)
-			ensemble-precedent
-			(let [last-complex-number (last ensemble-precedent)
-						next-complex-number (next-complex-number last-complex-number c)
-						nouvel-ensemble (conj ensemble-precedent next-complex-number)]
-				(recur nouvel-ensemble c (- n 1))))))
+  ([c n]
+    (let [z0 {:real 0 :imaginary 0}]
+      (ensemble-mandelbrot [z0] c n)))
+  ([ensemble-precedent c n]
+    (if (= n 0)
+      ensemble-precedent
+      (let [last-complex-number (last ensemble-precedent)
+            next-complex-number (next-complex-number last-complex-number c)
+            nouvel-ensemble (conj ensemble-precedent next-complex-number)]
+        (recur nouvel-ensemble c (- n 1))))))
 ;; liste des nombres complexes de mandelbrot de z0 à zn
 
 (defn read-complex [string])
@@ -84,3 +85,17 @@ ensemble-mandelbrot-test
 (write-complex z2-test)
 (write-complex z3-test)
 (write-complex z4-test)
+
+
+
+(ensemble-mandelbrot c 4)
+
+(defn mandelbrot-data [c n]
+  (ensemble-mandelbrot c n))
+
+
+(def c11
+  {:real 1
+   :imaginary 1})
+
+(mandelbrot-data c11 1)
