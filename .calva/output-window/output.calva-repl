@@ -1,0 +1,161 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+o o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Jacking in...
+; Starting Jack-in Terminal: npx.cmd shadow-cljs -d cider/cider-nrepl:0.27.4 watch :app
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+;   The Calva Connection Log might have more connection progress information.
+; Connected session: cljs, repl: node-repl
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Jack-in done.
+cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
+#'fractalis.fractal/add-complex
+cljs꞉fractalis.fractal꞉> 
+#'fractalis.fractal/z1-test
+cljs꞉fractalis.fractal꞉> 
+#'fractalis.fractal/z2-test
+cljs꞉fractalis.fractal꞉> 
+{:real 3, :imaginary 3}
+cljs꞉fractalis.fractal꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var fractalis.fractal/mandelbrot-data
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:18
+ Use of undeclared Var fractalis.fractal/c11
+--------------------------------------------------------------------------------
+
+cljs꞉fractalis.fractal꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var fractalis.fractal/mandelbrot-data
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:18
+ Use of undeclared Var fractalis.fractal/c11
+--------------------------------------------------------------------------------
+
+cljs꞉fractalis.fractal꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:4
+ Use of undeclared Var fractalis.fractal/ensemble-mandelbrot
+--------------------------------------------------------------------------------
+
+cljs꞉fractalis.fractal꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:18
+ Use of undeclared Var fractalis.fractal/c11
+--------------------------------------------------------------------------------
+
+cljs꞉fractalis.fractal꞉> 
+#'fractalis.fractal/c11
+cljs꞉fractalis.fractal꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+Cannot read properties of undefined (reading 'call')
+cljs꞉fractalis.fractal꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var fractalis.fractal/ensemble-mandelbrot
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:22
+ Use of undeclared Var fractalis.fractal/c
+--------------------------------------------------------------------------------
+
+cljs꞉fractalis.fractal꞉> 
+; Evaluating file: fractal.cljs
+[]
+cljs꞉fractalis.fractal꞉> 
+; nREPL Connection was closed
+; Jacking in...
+; Starting Jack-in Terminal: npx.cmd shadow-cljs -d cider/cider-nrepl:0.27.4 watch :app
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: shadow-cljs...
+;   The Calva Connection Log might have more connection progress information.
+; [:browser-repl] Configuring build.
+; [:browser-repl] Compiling ...
+; [:browser-repl] Build completed. (150 files, 149 compiled, 0 warnings, 11,16s)
+; Connected session: cljs, repl: browser-repl
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+; Jack-in done.
+cljs꞉cljs.user꞉> 
+; Evaluating file: fractal.cljs
+[]
+cljs꞉fractalis.fractal꞉> 
+[{:real 0, :imaginary 0} {:real 1, :imaginary 1}]
+cljs꞉fractalis.fractal꞉> 
+[{:real 0, :imaginary 0} {:real 1, :imaginary 1}]
+cljs꞉fractalis.fractal꞉> 
+#'fractalis.fractal/c11
+cljs꞉fractalis.fractal꞉> 
+#'fractalis.views/data3
+cljs꞉fractalis.views꞉> 
+#'fractalis.views/data3
+cljs꞉fractalis.views꞉> 
+[{:x 200, :y 260, :z 240}
+ {:x 180, :y 280, :z 260}
+ {:x 190, :y 290, :z 250}
+ {:x 198, :y 250, :z 210}
+ {:x 210, :y 220, :z 230}
+ {:x 240, :y 290, :z 220}]
+cljs꞉fractalis.views꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:1
+ Use of undeclared Var fractalis.views/data2
+--------------------------------------------------------------------------------
+
+cljs꞉fractalis.views꞉> 
+; Evaluating file: views.cljs
+[]
+cljs꞉fractalis.views꞉> 
+[{:x 100, :y 200, :z 200}
+ {:x 110, :y 280, :z 200}
+ {:x 120, :y 100, :z 260}
+ {:x 140, :y 250, :z 280}
+ {:x 150, :y 400, :z 500}
+ {:x 170, :y 300, :z 400}]
+cljs꞉fractalis.views꞉> 
+#'fractalis.views/scatter-chart
+cljs꞉fractalis.views꞉> 
+[:> #object[CategoricalChartWrapper] {:width 730, :height 250} [:> #object[CartesianGrid] {:strokeDasharray "3 3"}] [:> #object[global] {:type "number", :dataKey "x", :name "stature", :unit "cm"}] [:> #object[global] {:type "number", :dataKey "y", :name "weight", :unit "kg"}] [:> #object[global] {:dataKey "Z", :range [64 144], :name "score", :unit "km"}] [:> #object[Tooltip] {:cursor {:strokeDasharray "3 3"}}] [:> #object[Legend]] [:> #object[Scatter] {:name "A school", :data [{:x 100, :y 200, :z 200} {:x 110, :y 280, :z 200} {:x 120, :y 100, :z 260} {:x 140, :y 250, :z 280} {:x 150, :y 400, :z 500} {:x 170, :y 300, :z 400}], :fill "#8884d8"}] [:> #object[Scatter] {:name "B school", :data [{:x 200, :y 260, :z 240} {:x 180, :y 280, :z 260} {:x 190, :y 290, :z 250} {:x 198, :y 250, :z 210} {:x 210, :y 220, :z 230} {:x 240, :y 290, :z 220}], :fill "#82ca9d"}]]
+cljs꞉fractalis.views꞉> 

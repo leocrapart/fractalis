@@ -36,6 +36,8 @@
 	 {:x 240 :y 290 :z 220}
 	 ])
 
+data2
+
 (def c11
   {:real 1
    :imaginary 1})
@@ -66,6 +68,7 @@
 	])
 
 
+
 (defn fractal-scatter-chart []
 	[:> recharts/ScatterChart
 		{:width 730
@@ -82,7 +85,7 @@
   			data [["A" 250] ["B" 500]]]
     [:div
      [:h1
-      "Hello from " @name " 3"]
+      "Hello from " @name " 4"]
      [fractal-scatter-chart]
      (for [x (range 0 (count mandelbrot-data))]
      	 [:div (str (nth (map fractal/write-complex mandelbrot-data) x))])

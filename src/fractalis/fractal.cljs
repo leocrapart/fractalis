@@ -99,3 +99,13 @@ ensemble-mandelbrot-test
    :imaginary 1})
 
 (mandelbrot-data c11 1)
+
+
+
+
+
+(defn is-borned [])
+;; try getting the next, until stop
+;; if infinite loop (10 turns almost equal => true)
+;; if goes out of range (try fail => false)
+;; else continue
