@@ -103,25 +103,101 @@ ensemble-mandelbrot-test
 (defn number-of-points-on-row [delta]
 	(int (Math/ceil 
 					(+ 1 
-						(/ 2 delta)))))
+						(/ 4 delta)))))
 
 (defn number-of-points-on-col [delta]
 	(number-of-points-on-row delta))
 
+
+(defn number-of-points-to-check [delta]
+	(* (number-of-points-on-row delta)
+		 (number-of-points-on-col delta)))
+
+
 ; (number-of-points-on-row 0.9)
 ; (number-of-points-on-col 0.9)
 ; (int (Math/ceil 0.9))
+; (number-of-points-to-check 0.9)
 
-(defn generate-point-to-check [delta]
 
-	[[-2 2] [0 2] [2 2]
-	 [-2 0] [0 0] [2 0]
-	 [-2 -2] [0 -2] [2 -2]])
+; x times from left to right
+; y times from top to bottom
+(defn point-to-check [x y delta]
+	[(+ -2 (* x delta))  (+ 2 (- (* y delta)))])
 
+(+ -2 (* 1 1))
+(+ 2 (- (* 0 1)))
+(point-to-check (- (number-of-points-on-row 1) 1)
+                 0
+                 1)
+
+
+(defn not-before-last-point-on-row [point delta]
+	(let [x (nth point 0)
+				distance-with-end (- 2 x)]
+		(if (> distance-with-end delta)
+			true
+			false)))
+
+(defn not-before-last-point-on-col [point delta]
+	(let [y (nth point 1)
+				distance-with-end (Math/abs (- -2 y))]
+		(if (> distance-with-end delta)
+			true
+			false)))
+
+
+
+(defn next-point-to-check-on-row [point delta]
+	(if (not-before-last-point-on-row point delta)
+		(let [x (nth point 0)
+			  	y (nth point 1)]
+			[(+ x delta) y])
+		[2 (nth point 1)])
+	)
+
+(defn next-point-to-check-on-col [point delta]
+	(if (not-before-last-point-on-col point delta)
+		(let [x (nth point 0)
+			  	y (nth point 1)]
+			[x (+ y (- delta))])
+		[-2 (nth point 0)])
+	)
+
+
+; perfect
+(next-point-to-check-on-row [-2 2] 1)
+(next-point-to-check-on-row [-1 2] 1)
+(next-point-to-check-on-row [0 2] 1)
+(next-point-to-check-on-row [1 2] 1)
+(next-point-to-check-on-row [2 2] 1)
+
+(next-point-to-check-on-row [-2 2] 0.9)
+(next-point-to-check-on-row [-1.1 2] 0.9)
+(next-point-to-check-on-row [-0.2 2] 0.9)
+(next-point-to-check-on-row [0.7 2] 0.9)
+(next-point-to-check-on-row [1.6 2] 0.9)
+(next-point-to-check-on-row [2 2] 0.9)
+
+
+;wip
+; (defn generate-points-to-check [delta]
+; 	(for [y (range 0 (+ 1 (number-of-points-on-col delta)))]
+; 		(for [x (range 0 (+ 1 (number-of-points-on-row delta)))]
+; 			(conj)
+; 		)))
+
+
+; [[-2 2] [0 2] [2 2]
+;  [-2 0] [0 0] [2 0]
+;  [-2 -2] [0 -2] [2 -2]])
+
+(range 1 (+ 1 (number-of-points-on-row 0.5)))
+(range 1 4)
 (generate-point-to-check 1)
 
 (defn is-borned [])
-;; try getting the next, until stop
-;; if infinite loop (10 turns almost equal => true)
-;; if goes out of range (try fail => false)
-;; else continue
+; try getting the next, until stop
+; if infinite loop (10 turns almost equal => true)
+; if goes out of range (try fail => false)
+; else continue
