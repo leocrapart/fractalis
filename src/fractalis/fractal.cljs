@@ -166,12 +166,14 @@ ensemble-mandelbrot-test
 
 
 ; perfect
+; delta = 1
 (next-point-to-check-on-row [-2 2] 1)
 (next-point-to-check-on-row [-1 2] 1)
 (next-point-to-check-on-row [0 2] 1)
 (next-point-to-check-on-row [1 2] 1)
 (next-point-to-check-on-row [2 2] 1)
 
+; delta = 0.9
 (next-point-to-check-on-row [-2 2] 0.9)
 (next-point-to-check-on-row [-1.1 2] 0.9)
 (next-point-to-check-on-row [-0.2 2] 0.9)
