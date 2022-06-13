@@ -100,9 +100,25 @@ ensemble-mandelbrot-test
 
 (mandelbrot-data c11 1)
 
+(defn number-of-points-on-row [delta]
+	(int (Math/ceil 
+					(+ 1 
+						(/ 2 delta)))))
 
+(defn number-of-points-on-col [delta]
+	(number-of-points-on-row delta))
 
+; (number-of-points-on-row 0.9)
+; (number-of-points-on-col 0.9)
+; (int (Math/ceil 0.9))
 
+(defn generate-point-to-check [delta]
+
+	[[-2 2] [0 2] [2 2]
+	 [-2 0] [0 0] [2 0]
+	 [-2 -2] [0 -2] [2 -2]])
+
+(generate-point-to-check 1)
 
 (defn is-borned [])
 ;; try getting the next, until stop
