@@ -239,13 +239,28 @@ ensemble-mandelbrot-test
 			(if is-last-point-to-check
 				points
 				(recur (next-points points delta) delta)))))
-	
-(def delta-used 0.01)
-(println (points-to-check delta-used))
+
+(def delta-used 3)
+; (println (points-to-check delta-used))
 (count (points-to-check delta-used))
 (number-of-points-to-check delta-used)
 
-(= [2 -2.0] [2 -2])
+
+;; plot points to check
+;; point number-of-points-to-check = f(delta)
+;; plot smoothly while it calculates (plot time-to-calc = f(delta) and f(number-of-points)
+
+;; 2    9     <100ms
+;; 1    25    <100ms
+;; 0.5  81    <100ms
+;; 0.1  1681  179ms
+;; 0.05 6561  1.9s
+;; 0.04 10201 4.4s
+;; 0.03 18225 13s
+;; 0.02 40401 76s
+
+
+; (= [2 -2.0] [2 -2])
 
 ; [[-2 2] [0 2] [2 2]
 ;  [-2 0] [0 0] [2 0]
