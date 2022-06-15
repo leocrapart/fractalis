@@ -164,6 +164,13 @@ ensemble-mandelbrot-test
 		[-2 (nth point 0)])
 	)
 
+(defn is-last-point-on-row [point]
+	(if (= (nth point 0) 2)
+		true
+		false))
+
+(is-last-point-on-row [1.9 2])
+
 
 ; perfect
 ; delta = 1
@@ -181,14 +188,64 @@ ensemble-mandelbrot-test
 (next-point-to-check-on-row [1.6 2] 0.9)
 (next-point-to-check-on-row [2 2] 0.9)
 
+(Math/abs (- -2 1.5))
 
-;wip
-; (defn generate-points-to-check [delta]
-; 	(for [y (range 0 (+ 1 (number-of-points-on-col delta)))]
-; 		(for [x (range 0 (+ 1 (number-of-points-on-row delta)))]
-; 			(conj)
-; 		)))
+(defn first-point-on-next-row [last-point-on-row delta]
+	(let [y (nth last-point-on-row 1)
+				distance-with-end (Math/abs (- -2 y))]
+		(if (< distance-with-end delta)
+			[-2 -2]
+			[-2 (+ y (- delta))]
+			)))
 
+; (Math/abs (- -2 1))
+; (> (Math/abs (- -2 1)) 0.5)
+
+(first-point-on-next-row [2 1] 0.5)
+
+
+(defn next-point-to-check [point delta]
+		(if (is-last-point-on-row point)
+			(first-point-on-next-row point delta)
+			(next-point-to-check-on-row point delta)
+			))
+
+; perfect
+(next-point-to-check [1 1] 0.5)
+(next-point-to-check [1.5 1] 0.5)
+(next-point-to-check [2 1] 0.5)
+(next-point-to-check [-2 0.5] 0.5)
+; ...
+
+(defn next-points [points delta]
+	(let [last-point (last points)
+				next-point (next-point-to-check last-point delta)]
+		(conj points next-point)))
+
+(next-points [[1 1] [1.5 1] [2 1]] 0.5)
+
+(if (count (next-points)))
+
+; given delta precision, generates the points to check later
+(defn points-to-check
+	([delta]
+		(points-to-check [[-2 2]] delta))
+	([points delta]
+		(let [last-point (last points)
+					last-point-x (nth last-point 0)
+					last-point-y (nth last-point 1)
+					last-point-float [(float last-point-x) (float last-point-y)]
+					is-last-point-to-check (= [2.0 -2.0] last-point-float)]
+			(if is-last-point-to-check
+				points
+				(recur (next-points points delta) delta)))))
+	
+(def delta-used 0.01)
+(println (points-to-check delta-used))
+(count (points-to-check delta-used))
+(number-of-points-to-check delta-used)
+
+(= [2 -2.0] [2 -2])
 
 ; [[-2 2] [0 2] [2 2]
 ;  [-2 0] [0 0] [2 0]
