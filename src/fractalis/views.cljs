@@ -6,6 +6,13 @@
    ["recharts" :as recharts]
    [fractalis.fractal :as fractal]))
    
+(def points-to-check-data
+	(conj (fractal/points-to-check-data 0.1)
+				{:x -5 :y -5}
+				{:x 5 :y 5}))
+
+
+
 
 (def data
   [{:name "Page A" :uv 300 :pv 2600 :amt 3400}
@@ -80,12 +87,26 @@ data2
 		[:> recharts/Scatter {:name "A school" :data mandelbrot-data :fill "#8884d8"}]
 	])
 
+(defn points-to-check-scatter-chart []
+	[:> recharts/ScatterChart
+		{:width 500
+		 :height 500}
+		[:> recharts/CartesianGrid {:strokeDasharray "3 3"}]
+		[:> recharts/XAxis {:type "number" :dataKey "x"}]
+		[:> recharts/YAxis {:type "number" :dataKey "y"}]
+		[:> recharts/Tooltip {:cursor {:strokeDasharray "3 3"}}]
+		[:> recharts/Scatter {:name "Points to check" :data points-to-check-data :fill "#8884d8"}]
+	])
+
+
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])
   			data [["A" 250] ["B" 500]]]
     [:div
-     [:h1
-      "Hello from " @name " 4"]
+     ; [:h1
+     ;  "Hello from " @name " 4"]
+     [:h1 "Fractalis"]
+     [points-to-check-scatter-chart]
      [fractal-scatter-chart]
      (for [x (range 0 (count mandelbrot-data))]
      	 [:div (str (nth (map fractal/write-complex mandelbrot-data) x))])

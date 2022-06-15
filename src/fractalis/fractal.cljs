@@ -224,7 +224,6 @@ ensemble-mandelbrot-test
 
 (next-points [[1 1] [1.5 1] [2 1]] 0.5)
 
-(if (count (next-points)))
 
 ; given delta precision, generates the points to check later
 (defn points-to-check
@@ -240,10 +239,14 @@ ensemble-mandelbrot-test
 				points
 				(recur (next-points points delta) delta)))))
 
+; (= [2 -2.0] [2 -2])
+
+
 (def delta-used 3)
 ; (println (points-to-check delta-used))
 (count (points-to-check delta-used))
 (number-of-points-to-check delta-used)
+
 
 
 ;; plot points to check
@@ -260,18 +263,31 @@ ensemble-mandelbrot-test
 ;; 0.02 40401 76s
 
 
-; (= [2 -2.0] [2 -2])
 
-; [[-2 2] [0 2] [2 2]
-;  [-2 0] [0 0] [2 0]
-;  [-2 -2] [0 -2] [2 -2]])
 
-(range 1 (+ 1 (number-of-points-on-row 0.5)))
-(range 1 4)
-(generate-point-to-check 1)
 
-(defn is-borned [])
+; (defn is-borned [])
 ; try getting the next, until stop
 ; if infinite loop (10 turns almost equal => true)
 ; if goes out of range (try fail => false)
 ; else continue
+
+
+; turn [1 1] into [{:x 1 :y 1}]
+
+(defn point-data [point]
+	{:x (nth point 0)
+	 :y (nth point 1)})
+
+; (point-data [1 1])
+; (def points [[-2 2] [-1.5 -2] [-1.0 -2]])
+; (map point-data points)
+; (type (map point-data points))
+; (vec (map point-data points))
+
+(defn points-to-check-data [delta]
+	(let [points (points-to-check delta)]
+		(vec (map point-data points))))
+
+
+; (points-to-check-data 2)
