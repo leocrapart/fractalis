@@ -11,6 +11,13 @@
 				{:x -5 :y -5}
 				{:x 5 :y 5}))
 
+;; idea
+;; get the complex function as input 
+;; and draw the fractal graph 
+;; asynchronously, to avoid ressource overload
+;; with good colors (artistic)
+;; user can also modify the precision (distance between points, and refresh rate)
+
 
 
 
