@@ -1,5 +1,20 @@
 # fractalis
 
+A re-frame application designed to visualize fractals.
+
+
+In progress : 
+- mandelbrot fractal
+
+Final goal :
+- input a complex equation and rule for initial point to be part of the set, and visualize the whole set.
+
+
+Using:
+- re-frame
+- recharts
+
+
 A [re-frame](https://github.com/day8/re-frame) application designed to display fractals.
 
 ## Getting Started
