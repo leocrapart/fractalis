@@ -2,9 +2,14 @@
 
 A re-frame application designed to visualize fractals.
 
+Current state :
+- core logic for mandelbrot fractal
+- recharts integration
+- can generate and visualize points to check for mandelbrot belonging
+
 
 In progress : 
-- mandelbrot fractal
+- mandelbrot fractal visualization
 
 Final goal :
 - input a complex equation and rule for initial point to be part of the set, and visualize the whole set.
