@@ -7,7 +7,7 @@
    [fractalis.fractal :as fractal]))
    
 (def points-to-check-data
-	(conj (fractal/points-to-check-data 0.1)
+	(conj (fractal/points-to-check-data 1)
 				{:x -5 :y -5}
 				{:x 5 :y 5}))
 

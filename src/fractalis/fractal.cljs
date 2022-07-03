@@ -290,4 +290,4 @@ ensemble-mandelbrot-test
 		(vec (map point-data points))))
 
 
-; (points-to-check-data 2)
+(points-to-check-data 2)
