@@ -359,8 +359,6 @@ ensemble-mandelbrot-test
 					 :n next-n)))
 
 (next-sequence-point sequence-point)
-
-
 (if (out-of-2-by-2-square point)
 	false
 	(next-point point))
@@ -391,6 +389,8 @@ ensemble-mandelbrot-test
 (belongs-to-mandelbrot-set [0 1])
 (belongs-to-mandelbrot-set [0 0.5])
 (belongs-to-mandelbrot-set [0.8 0])
+(belongs-to-mandelbrot-set [-1 0.4])
+
 
 (next-sequence-point {:n 1 :initial-point [0.8 0] :point [0.8 0]})
 (next-sequence-point {:n 1 :initial-point [0.8 0] :point [1.44 0]})
@@ -410,7 +410,29 @@ ensemble-mandelbrot-test
 	(let [points (mandelbrot-set delta)]
 		(vec (map point-data points))))
 
-(mandelbrot-set-data 2)
+
+(comment 
+	(mandelbrot-set-data 2)
+	(mandelbrot-set-data 0.2)
+	(count 
+		(mandelbrot-set-data 0.2)))
 
 ([2 0] 0)
 (nth [2 0] 0)
+
+
+;; better algorithm
+
+;; colors : 
+;; black => belongs to mandelbrot set
+;; blue => many iterations needed to diverge
+;; green => little less
+;; yellow => even less
+;; orange => few needed
+;; red => zero or one
+
+; step 1 : plot only black
+;; webgl bindings
+;; pixels
+
+;;webgl canva bindings

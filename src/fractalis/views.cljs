@@ -123,6 +123,27 @@ data2
 		[:> recharts/Scatter {:name "Mandelbrot set" :data mandelbrot-set-data :fill "#8884d8"}]
 	])
 
+(defn get-real-size [el]
+  (let [bb (.getBoundingClientRect el)]
+    [(.-width bb) (.-height bb)]))
+
+(defn Canvas [{:keys [width height render]}]
+    (let [state (atom nil)]
+        (r/create-class
+            {:reagent-render      (fn []
+                                      (let [update-size (fn [el]
+                                                            (when el
+                                                                (let [size (get-real-size el)
+                                                                      ctx (.getContext el "2d")]
+                                                                    (swap! state assoc :size size)
+                                                                    (render ctx size))))]
+                                          (fn [] (let [{:keys [size]} @state]
+                                                     [:canvas {:style  {:width width :height height}
+                                                               :ref    update-size
+                                                               :width  (nth size 0)
+                                                               :height (nth size 1)}]))))
+             :component-did-mount (fn [] (reset! state {:size nil}))
+             })))
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])
@@ -131,6 +152,14 @@ data2
      ; [:h1
      ;  "Hello from " @name " 4"]
      [:h1.text-blue-500.text-3xl.font-bold "Fractalis"]
+     [Canvas {:width "50%"
+		          :height "50%"
+		          :render (fn [ctx [w h]]
+		                  	(.fillRect ctx 100 10 w h)
+		                  	(.fillStyle ctx "green")
+		                  	(.fillRect ctx 0 0 w h)
+
+		                  	)}]
      [:div.flex
 	     [points-to-check-scatter-chart]
 	     [:div.px-8]
