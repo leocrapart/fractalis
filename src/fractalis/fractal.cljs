@@ -12,8 +12,13 @@
                   (* (z1 :imaginary) (z2 :real))))})
 
 
-(defn next-complex-number [z c]
-  (add-complex (multiply-complex z z) c))
+(defn next-complex-number
+	([c]
+		(next-complex-number {:real 0 :imaginary 0} c))
+	([z c]
+  	(add-complex (multiply-complex z z) c)))
+
+
 
 
 
@@ -90,6 +95,7 @@ ensemble-mandelbrot-test
 
 (ensemble-mandelbrot c 4)
 
+;;api
 (defn mandelbrot-data [c n]
   (ensemble-mandelbrot c n))
 
@@ -239,6 +245,8 @@ ensemble-mandelbrot-test
 				points
 				(recur (next-points points delta) delta)))))
 
+(points-to-check 2)
+
 ; (= [2 -2.0] [2 -2])
 
 
@@ -285,9 +293,124 @@ ensemble-mandelbrot-test
 ; (type (map point-data points))
 ; (vec (map point-data points))
 
+;; api
 (defn points-to-check-data [delta]
 	(let [points (points-to-check delta)]
 		(vec (map point-data points))))
 
 
-(points-to-check-data 2)
+(points-to-check-data 1)
+
+;; divergence
+;; diverges if goes out of 2 by 2 square
+;; try 100 times maximum, if no divergence, then assume convergence
+
+(defn next-point 
+	([initial-point]
+		(next-point [0 0] initial-point))
+	([point initial-point]
+			(let [initial-complex {:real (initial-point 0) :imaginary (initial-point 1)}
+						complex {:real (point 0) :imaginary (point 1)}
+						next-complex (next-complex-number complex initial-complex)]
+				[(next-complex :real) (next-complex :imaginary)])))
+
+(next-complex-number {:real 0 :imaginary 0} {:real 1 :imaginary 1})
+
+(def initial-point [1 1])
+(next-point initial-point)
+(next-point [0 0] initial-point)
+(next-point [1 1] initial-point)
+(next-point [1 2] initial-point)
+;; [-2 5]
+;; 5 > 2 => diverges
+;; [1 1] is not part of mandelbrot set
+
+
+(next-point [1 1] initial-point)
+(next-point [1 1])
+(next-point [1 2])
+
+(defn out-of-2-by-2-square [point]
+	(if (or (> (point 0) 2) (> (point 1) 2)
+					(< (point 0) -2) (< (point 1) -2))
+		true
+		false))
+
+(out-of-2-by-2-square [1 1])
+(out-of-2-by-2-square [2 2])
+(out-of-2-by-2-square [2.1 2.1])
+(out-of-2-by-2-square [2.1 1.9])
+(out-of-2-by-2-square [1.9 2.1])
+(out-of-2-by-2-square [0 0])
+(out-of-2-by-2-square [-2 -2])
+(out-of-2-by-2-square [-2.1 -0])
+(out-of-2-by-2-square [-2.1 -2.1])
+
+
+(def point [1 1])
+(def sequence-point {:point [1 1] :initial-point [1 1] :n 1})
+
+(defn next-sequence-point [sequence-point]
+	(let [next-point (next-point (sequence-point :point) 
+															 (sequence-point :initial-point))
+				next-n (+ 1 (sequence-point :n))]
+		(assoc sequence-point 
+					 :point next-point
+					 :n next-n)))
+
+(next-sequence-point sequence-point)
+
+
+(if (out-of-2-by-2-square point)
+	false
+	(next-point point))
+
+(defn diverges? [sequence-point]
+	(if (out-of-2-by-2-square (sequence-point :point))
+		true
+		(if (> (sequence-point :n) 100)
+			false
+			(recur (next-sequence-point sequence-point)))))
+
+(diverges? {:n 1 :initial-point [1 1] :point [1 1]})
+(diverges? {:n 1 :initial-point [0 0] :point [0 0]})
+(diverges? {:n 1 :initial-point [-1 0] :point [-1 0]})
+
+
+(defn belongs-to-mandelbrot-set [point]
+	(let [x (point 0)
+				first-sequence-point {:n 1 :initial-point point :point point}
+				diverges? (diverges? first-sequence-point)]
+		(not diverges?)))
+
+
+(belongs-to-mandelbrot-set [-2 2])
+(belongs-to-mandelbrot-set [-2 0])
+(belongs-to-mandelbrot-set [0 2])
+(belongs-to-mandelbrot-set [0 0])
+(belongs-to-mandelbrot-set [0 1])
+(belongs-to-mandelbrot-set [0 0.5])
+(belongs-to-mandelbrot-set [0.8 0])
+
+(next-sequence-point {:n 1 :initial-point [0.8 0] :point [0.8 0]})
+(next-sequence-point {:n 1 :initial-point [0.8 0] :point [1.44 0]})
+;; should be 3.68, is 2.87
+
+(defn mandelbrot-set [delta]
+	(filter belongs-to-mandelbrot-set (points-to-check delta)))
+
+
+(mandelbrot-set 2)
+(mandelbrot-set 1)
+(mandelbrot-set 0.5)
+
+
+;;api
+(defn mandelbrot-set-data [delta]
+	(let [points (mandelbrot-set delta)]
+		(vec (map point-data points))))
+
+(mandelbrot-set-data 2)
+
+([2 0] 0)
+(nth [2 0] 0)

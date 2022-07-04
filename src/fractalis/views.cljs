@@ -5,9 +5,16 @@
    [reagent.core :as r]
    ["recharts" :as recharts]
    [fractalis.fractal :as fractal]))
-   
+  
+
+(def delta 0.2)
 (def points-to-check-data
-	(conj (fractal/points-to-check-data 1)
+	(conj (fractal/points-to-check-data delta)
+				{:x -5 :y -5}
+				{:x 5 :y 5}))
+
+(def mandelbrot-set-data
+	(conj (fractal/mandelbrot-set-data delta)
 				{:x -5 :y -5}
 				{:x 5 :y 5}))
 
@@ -105,6 +112,17 @@ data2
 		[:> recharts/Scatter {:name "Points to check" :data points-to-check-data :fill "#8884d8"}]
 	])
 
+(defn mandelbrot-set-scatter-chart []
+	[:> recharts/ScatterChart
+		{:width 500
+		 :height 500}
+		[:> recharts/CartesianGrid {:strokeDasharray "3 3"}]
+		[:> recharts/XAxis {:type "number" :dataKey "x"}]
+		[:> recharts/YAxis {:type "number" :dataKey "y"}]
+		[:> recharts/Tooltip {:cursor {:strokeDasharray "3 3"}}]
+		[:> recharts/Scatter {:name "Mandelbrot set" :data mandelbrot-set-data :fill "#8884d8"}]
+	])
+
 
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])
@@ -112,8 +130,13 @@ data2
     [:div
      ; [:h1
      ;  "Hello from " @name " 4"]
-     [:h1 "Fractalis"]
-     [points-to-check-scatter-chart]
+     [:h1.text-blue-500.text-3xl.font-bold "Fractalis"]
+     [:div.flex
+	     [points-to-check-scatter-chart]
+	     [:div.px-8]
+	     [mandelbrot-set-scatter-chart]
+	   ]
+	   [:div.py-16]
      [fractal-scatter-chart]
      (for [x (range 0 (count mandelbrot-data))]
      	 [:div (str (nth (map fractal/write-complex mandelbrot-data) x))])
