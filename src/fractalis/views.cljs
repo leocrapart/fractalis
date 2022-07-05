@@ -7,16 +7,36 @@
    [fractalis.fractal :as fractal]))
   
 
-(def delta 0.2)
+;; converters
+(defn point-data [point]
+	{:x (nth point 0)
+	 :y (nth point 1)})
+
+(defn x-y-data [points]
+	(vec (map point-data points)))
+
+
+
+(def delta 0.4)
 (def points-to-check-data
-	(conj (fractal/points-to-check-data delta)
+	(conj (x-y-data (fractal/points-to-check delta))
 				{:x -5 :y -5}
 				{:x 5 :y 5}))
 
 (def mandelbrot-set-data
-	(conj (fractal/mandelbrot-set-data delta)
+	(conj (x-y-data (fractal/mandelbrot-set delta))
 				{:x -5 :y -5}
 				{:x 5 :y 5}))
+
+
+; (defn points-to-check-data [delta]
+; 	(let [points (points-to-check delta)]
+; 		(vec (map point-data points))))
+
+; (defn mandelbrot-set-data [delta]
+; 	(let [points (mandelbrot-set delta)]
+; 		(vec (map point-data points))))
+
 
 ;; idea
 ;; get the complex function as input 
@@ -71,9 +91,6 @@ data2
 	{:real 0.1
    :imaginary 0.1})
 
-(def mandelbrot-data 
-	(fractal/mandelbrot-data c-1-1 10))
-
 (defn scatter-chart []
 	[:> recharts/ScatterChart
 		{:width 730
@@ -88,18 +105,6 @@ data2
 		[:> recharts/Scatter {:name "B school" :data data3 :fill "#82ca9d"}]
 	])
 
-
-
-(defn fractal-scatter-chart []
-	[:> recharts/ScatterChart
-		{:width 730
-		 :height 250}
-		[:> recharts/CartesianGrid {:strokeDasharray "3 3"}]
-		[:> recharts/XAxis {:type "number" :dataKey "real"}]
-		[:> recharts/YAxis {:type "number" :dataKey "imaginary"}]
-		[:> recharts/Tooltip {:cursor {:strokeDasharray "3 3"}}]
-		[:> recharts/Scatter {:name "A school" :data mandelbrot-data :fill "#8884d8"}]
-	])
 
 (defn points-to-check-scatter-chart []
 	[:> recharts/ScatterChart
@@ -145,6 +150,41 @@ data2
              :component-did-mount (fn [] (reset! state {:size nil}))
              })))
 
+(defn draw-pixel [ctx point]
+	(.fillRect ctx (point 0) (point 1) 1 1))
+
+(defn draw-pixels [ctx points]
+	(doseq [point points]
+		(draw-pixel ctx point)))
+
+(defn draw-cube [ctx point]
+	(.fillRect ctx (point 0) (point 1) 10 10))
+
+(defn draw-mandelbrot [el]
+	(let [ctx (.getContext el "2d")]
+		(draw-pixel ctx [0 0])
+		(draw-pixel ctx [10 0])
+		(draw-pixel ctx [20 0])
+		(draw-pixel ctx [30 0])
+
+		(draw-pixels ctx [[0 50] [10 50] [20 50] [30 50]])
+
+		(draw-cube ctx [100 100])
+		(draw-cube ctx [200 100])
+		(draw-cube ctx [300 100])
+		(draw-cube ctx [400 100])
+		(draw-cube ctx [500 100])
+		))
+
+(defn real-size-canvas [])
+
+(defn custom-canvas []
+	[:canvas {:style {:width 200 :height 500}
+					 	:ref draw-mandelbrot
+					 }
+	]
+)
+
 (defn main-panel []
   (let [name (re-frame/subscribe [::subs/name])
   			data [["A" 250] ["B" 500]]]
@@ -152,23 +192,14 @@ data2
      ; [:h1
      ;  "Hello from " @name " 4"]
      [:h1.text-blue-500.text-3xl.font-bold "Fractalis"]
-     [Canvas {:width "50%"
-		          :height "50%"
-		          :render (fn [ctx [w h]]
-		                  	(.fillRect ctx 100 10 w h)
-		                  	(.fillStyle ctx "green")
-		                  	(.fillRect ctx 0 0 w h)
-
-		                  	)}]
      [:div.flex
 	     [points-to-check-scatter-chart]
 	     [:div.px-8]
 	     [mandelbrot-set-scatter-chart]
 	   ]
-	   [:div.py-16]
-     [fractal-scatter-chart]
-     (for [x (range 0 (count mandelbrot-data))]
-     	 [:div (str (nth (map fractal/write-complex mandelbrot-data) x))])
+	   [:div "custom canva"]
+	   [custom-canvas]
+	   [:div "end custom canvas"]
      ]))
 
 
