@@ -13,8 +13,8 @@
 (defn multiply-complex [z1 z2]
   {:real (- (* (z1 :real) (z2 :real))
             (* (z1 :imaginary) (z2 :imaginary)))
-   :imaginary (+ (* (z1 :real) (z2 :imaginary)
-                  (* (z1 :imaginary) (z2 :real))))})
+   :imaginary (+ (* (z1 :real) (z2 :imaginary))
+                 (* (z1 :imaginary) (z2 :real)))})
 
 (defn next-complex-number
 	([c]
@@ -22,6 +22,11 @@
 	([z c]
   	(add-complex (multiply-complex z z) c)))
 
+(comment
+	(def c {:real 1.1 :imaginary -1.4})
+	(def z {:real 1.1 :imaginary -1.4})
+	(add-complex (multiply-complex z z) c)
+	(multiply-complex z z))
 
 (defn read-complex [string])
 (defn write-complex [z]
@@ -277,7 +282,12 @@
 
 	(next-point [1 1] initial-point)
 	(next-point [1 1])
-	(next-point [1 2]))
+	(next-point [1 2])
+	(next-point [1.1 -1.4] [1.1 -1.4])
+	(next-complex-number {:real 1.1 :imaginary -1.4} {:real 1.1 :imaginary -1.4})
+
+
+	)
 
 
 
@@ -336,24 +346,27 @@
 		(not diverges?)))
 
 
+(defn next-sequence-point-reducable [sequence-point string]
+	(next-sequence-point sequence-point))
+
+
 (comment
-	(belongs-to-mandelbrot-set [-2 2])
-	(belongs-to-mandelbrot-set [-2 0])
-	(belongs-to-mandelbrot-set [0 2])
-	(belongs-to-mandelbrot-set [0 0])
-	(belongs-to-mandelbrot-set [0 1])
-	(belongs-to-mandelbrot-set [0 0.5])
-	(belongs-to-mandelbrot-set [0.8 0])
-	(belongs-to-mandelbrot-set [-1 0.4])
 
-	;; period-2 bulb
-	(belongs-to-mandelbrot-set [-1 0.2])
-	(belongs-to-mandelbrot-set [-1 0.25])
-	(belongs-to-mandelbrot-set [-0.75 0])
-	(belongs-to-mandelbrot-set [-0.75 0])
-	(belongs-to-mandelbrot-set [-0.7 0.2])
+	(belongs-to-mandelbrot-set [1.1 -1.4]) ;;should return false
+	(belongs-to-mandelbrot-set [1.1 1.4]) ;;should be symetric
 
-	(belongs-to-mandelbrot-set [-0.4 0.6]))
+
+	(def point [1.1 -1.4])
+	(def first-sequence-point {:n 1 :initial-point point :point point})
+	(next-sequence-point first-sequence-point)
+	(next-sequence-point first-sequence-point)
+	;; reduce here
+	(reduce next-sequence-point [first-sequence-point first-sequence-point])
+
+	(next-sequence-point-reducable first-sequence-point "")
+	(reduce next-sequence-point-reducable [first-sequence-point 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+	
+	)
 
 
 (next-sequence-point {:n 1 :initial-point [0.8 0] :point [0.8 0]})
