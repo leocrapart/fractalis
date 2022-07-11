@@ -72,25 +72,25 @@
 
 
 (defn number-of-points-on-row [delta]
-	(int (Math/ceil 
-					(+ 1 
-						(/ 4 delta)))))
+  (int (Math/ceil 
+          (+ 1 
+            (/ 4 delta)))))
 
 (defn number-of-points-on-col [delta]
-	(number-of-points-on-row delta))
+  (number-of-points-on-row delta))
 
 
 (defn number-of-points-to-check [delta]
-	(* (number-of-points-on-row delta)
-		 (number-of-points-on-col delta)))
+  (* (number-of-points-on-row delta)
+     (number-of-points-on-col delta)))
 
 
 (comment
-	(def delta 0.9)
-	(number-of-points-on-row delta)
-	(number-of-points-on-col delta)
-	(int (Math/ceil delta))
-	(number-of-points-to-check delta))
+  (def delta 0.9)
+  (number-of-points-on-row delta)
+  (number-of-points-on-col delta)
+  (int (Math/ceil delta))
+  (number-of-points-to-check delta))
 
 
 ; x times from left to right
@@ -179,46 +179,157 @@
 			(next-point-to-check-on-row point delta)))
 
 (comment 
-	(next-point-to-check [1 1] 0.5)
-	(next-point-to-check [1.5 1] 0.5)
-	(next-point-to-check [2 1] 0.5)
-	(next-point-to-check [-2 0.5] 0.5)
-	; ...
-	)
+  (next-point-to-check [1 1] 0.5)
+  (next-point-to-check [1.5 1] 0.5)
+  (next-point-to-check [2 1] 0.5)
+  (next-point-to-check [-2 0.5] 0.5))
+  ; ...
+  
 
 (defn next-points [points delta]
-	(let [last-point (last points)
-				next-point (next-point-to-check last-point delta)]
-		(conj points next-point)))
+  (let [last-point (last points)
+        next-point (next-point-to-check last-point delta)]
+    (conj points next-point)))
 
 (comment
-	(next-points [[1 1] [1.5 1] [2 1]] 0.5))
+  (next-points [[1 1] [1.5 1] [2 1]] 0.5))
 
 
 ; given delta precision, generates the points to check later
 ;;api
 (defn points-to-check
-	([delta]
-		(points-to-check [[-2 2]] delta))
-	([points delta]
-		(let [last-point (last points)
-					last-point-x (nth last-point 0)
-					last-point-y (nth last-point 1)
-					last-point-float [(float last-point-x) (float last-point-y)]
-					is-last-point-to-check (= [2.0 -2.0] last-point-float)]
-			(if is-last-point-to-check
-				points
-				(recur (next-points points delta) delta)))))
+  ([delta]
+   (points-to-check [[-2 2]] delta))
+  ([points delta]
+    (let [last-point (last points)
+          last-point-x (nth last-point 0)
+          last-point-y (nth last-point 1)
+          last-point-float [(float last-point-x) (float last-point-y)]
+          is-last-point-to-check (= [2.0 -2.0] last-point-float)]
+      (if is-last-point-to-check
+        points
+        (recur (next-points points delta) delta)))))
+
+(points-to-check 2)
+
+;; upgrade : remove recursivity from points-to-check
+;; ->
+
+(defn x-value [delta index]
+	(let [increment (/ 4 (dec (number-of-points-on-row delta)))]
+		delta
+		(+ -2 (* delta index))))
+
+(defn y-value [delta index]
+	(- 2 (* delta index)))
+
+(x-value 2 0)
+(x-value 2 1)
+(x-value 2 2)
+
+(x-value 1 0)
+
+(y-value 2 0)
+(y-value 2 1)
+(y-value 2 2)
+
+;; 0 -> -2
+;; 1 -> 0
+;; 2 -> 2
+
+(defn rowify [row]
+	(map (partial x-value 2) row))
+
+(rowify [0 1 2])
+
+(defn columnify [col]
+	(map (partial y-value 2) col))
+
+(defn point [delta x-index y-index]
+	[(x-value delta x-index) (y-value delta y-index)])
+
+(point 2 0 0)
+
+(defn row-indexes [delta col-index]
+	(let [nr (number-of-points-on-row delta)]
+		(map vector (range nr) (repeat nr col-index))))
+
+(defn indexes [delta]
+	;; ([0 0] [1 0] [2 0]
+	;;  [0 1] [1 1] [2 1]
+	;;  [0 2] [1 2] [2 2])
+	(let [nc (number-of-points-on-col delta)]
+		(map (partial row-indexes delta) (range nc)))
+	)
+
+(indexes 2)
+
+(defn row-to-points [delta row]
+	(map (fn [index-vector] (point delta (index-vector 0) (index-vector 1)))
+			 row))
+
+(row-to-points 2 [[0 0] [1 0] [2 0]])
+
+
+;; api : new implementation
+(defn points-to-check-flat [delta]
+	(map (partial row-to-points delta) (indexes delta)))
+
+(into [] cat (points-to-check-flat 2))
+
+
+(range 3)
+(def delta 2)
+(def nr (number-of-points-on-row delta))
+(def nc (number-of-points-on-col delta))
+
+(concat
+	(map vector (range nr) (repeat nr 0))
+	(map vector (range nr) (repeat nr 1))
+	(map vector (range nr) (repeat nr 2))
+	(map vector (range nr) (repeat nr 3))
+	(map vector (range nr) (repeat nr 4))
+	)
+
+
+
+(row-indexes 1 0)
+
+
+
+(defn points)
+
+
+
+
 
 (comment
-	(points-to-check 2)
-	(points-to-check 1)
-	(points-to-check 0.5)
-	(count (points-to-check 0.5))
-	(->
-		(points-to-check 0.5)
-		count)
-	(= [2 -2.0] [2 -2]))
+	(flatten [[1 2] [3 4]])
+	(vec
+		(map (fn [x] [(x-value x 2) x])
+			(range 
+				(number-of-points-to-check 2))))
+
+	(->> (repeat (number-of-points-on-col 2)
+				(range (number-of-points-on-row 2)))
+			(map rowify))
+
+	(->> (repeat (number-of-points-on-col 2)
+				(range (number-of-points-on-row 2)))
+			 (map columnify))
+
+	(point ))
+
+
+(comment
+  (points-to-check 2)
+  (points-to-check 1)
+  (points-to-check 0.5)
+  (count (points-to-check 0.5))
+  (->
+    (points-to-check 0.5)
+    count)
+  (= [2 -2.0] [2 -2]))
 
 
 (comment
@@ -312,20 +423,20 @@
 
 
 (defn next-sequence-point [sequence-point]
-	(let [next-point (next-point (sequence-point :point) 
-															 (sequence-point :initial-point))
-				next-n (+ 1 (sequence-point :n))]
-		(assoc sequence-point 
-					 :point next-point
-					 :n next-n)))
+  (let [next-point (next-point (sequence-point :point) 
+                               (sequence-point :initial-point))
+        next-n (+ 1 (sequence-point :n))]
+    (assoc sequence-point 
+           :point next-point
+           :n next-n)))
 
 (comment
-	(def point [1 1])
-	(def sequence-point {:point [1 1] :initial-point [1 1] :n 1})
-	(next-sequence-point sequence-point)
-	(if (out-of-2-by-2-square point)
-		false
-		(next-point point)))
+  (def point [1 1])
+  (def sequence-point {:point [1 1] :initial-point [1 1] :n 1})
+  (next-sequence-point sequence-point)
+  (if (out-of-2-by-2-square point)
+    false
+    (next-point point)))
 
 (defn diverges? [sequence-point]
 	(if (out-of-2-by-2-square (sequence-point :point))
@@ -335,6 +446,7 @@
 			(recur (next-sequence-point sequence-point)))))
 
 (diverges? {:n 1 :initial-point [1 1] :point [1 1]})
+(next-sequence-point {:n 1 :initial-point [1 1] :point [1 1]})
 (diverges? {:n 1 :initial-point [0 0] :point [0 0]})
 (diverges? {:n 1 :initial-point [-1 0] :point [-1 0]})
 
