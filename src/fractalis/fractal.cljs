@@ -287,8 +287,8 @@
 	(time (points-to-check-flat 0.005))
 	(time (points-to-check 0.05))
 
-	(count (points-to-check-flat 0.002))
-	(count (points-to-check-flat 0.02)))
+	(count (points-to-check-flat 0.005))
+	(count (points-to-check-flat 0.05)))
 
 ;; capacity increase : one order of delta
 ;; number of points x100
