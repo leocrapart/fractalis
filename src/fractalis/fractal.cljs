@@ -273,10 +273,26 @@
 
 ;; api : new implementation
 (defn points-to-check-flat [delta]
-	(map (partial row-to-points delta) (indexes delta)))
+	(into [] cat
+		(map (partial row-to-points delta) (indexes delta))))
 
-(into [] cat (points-to-check-flat 2))
+(points-to-check-flat 2)
 
+(= (points-to-check 2) (points-to-check-flat 2))
+(= (points-to-check 1) (points-to-check-flat 1))
+(= (points-to-check 0.5) (points-to-check-flat 0.5))
+(= (points-to-check 0.1) (points-to-check-flat 0.1))
+
+(comment
+	(time (points-to-check-flat 0.005))
+	(time (points-to-check 0.05))
+
+	(count (points-to-check-flat 0.002))
+	(count (points-to-check-flat 0.02)))
+
+;; capacity increase : one order of delta
+;; number of points x100
+;; + more linear compute time on very low deltas
 
 (range 3)
 (def delta 2)
