@@ -1,5 +1,56 @@
 (ns fractalis.fractal)
 
+;; exp
+
+;; parse string into equation and calcul
+
+
+"z*z"
+
+(rest "abc")
+(first "abc")
+
+;; input : string
+;; output : next-complex-function, with complex input [1 2]
+
+;; patterns : 
+;; z*z : square
+;; z+1 : real addition
+;; z+i : imaginary addition
+;; z   : identity
+;; z/2 : real division
+;; (z+1)/2 : composition
+
+
+;; try
+;; eval math string 
+;; https://stackoverflow.com/questions/35675832/evaluate-math-string-in-clojure
+
+(defn next-complex-function [string]
+	(let [first (first string)]
+		(if (= string "z*z")
+			(fn [z]
+				(multiply-complex z z))
+			(if (= string "z+z")
+				(fn [z]
+					(add-complex z z)))
+			)))
+
+([1 2] 0)
+
+(defn z-map [z-vector]
+	{:real (z-vector 0)
+	 :imaginary (z-vector 1)})
+
+((next-complex-function "z*z") (z-map [2 0]))
+((next-complex-function "z+z") (z-map [1 1]))
+
+
+
+
+;; exp
+
+
 ;; api 
 ;;mandelbrot-set [delta]
 ;;points-to-check [delta]
