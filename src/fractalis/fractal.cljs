@@ -34,6 +34,9 @@
 			(if (= string "z+z")
 				(fn [z]
 					(add-complex z z)))
+			(if (= string "z-z")
+				(fn [z]
+					(subtract-complex z z)))
 			)))
 
 ([1 2] 0)
@@ -44,8 +47,7 @@
 
 ((next-complex-function "z*z") (z-map [2 0]))
 ((next-complex-function "z+z") (z-map [1 1]))
-
-
+((next-complex-function "z-z") (z-map [1 1]))
 
 
 ;; exp
@@ -55,6 +57,9 @@
 ;;mandelbrot-set [delta]
 ;;points-to-check [delta]
 
+(defn subtract-complex [z1 z2]
+  {:real (- (z1 :real) (z2 :real))
+   :imaginary (- (z1 :imaginary) (z2 :imaginary))})
 
 (defn add-complex [z1 z2]
   {:real (+ (z1 :real) (z2 :real))
