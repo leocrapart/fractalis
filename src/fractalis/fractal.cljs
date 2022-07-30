@@ -48,7 +48,7 @@
 ((next-complex-function "z*z") (z-map [2 0]))
 ((next-complex-function "z+z") (z-map [1 1]))
 ((next-complex-function "z-z") (z-map [1 1]))
-
+((next-complex-function "z/z") (z-map [1 1])) ;; => error can't divide 2 complexs
 
 ;; exp
 
