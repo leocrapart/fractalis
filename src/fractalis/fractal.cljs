@@ -48,8 +48,13 @@
 ((next-complex-function "z*z") (z-map [2 0]))
 ((next-complex-function "z+z") (z-map [1 1]))
 ((next-complex-function "z-z") (z-map [1 1]))
+((next-complex-function "z^2") (z-map [1 1]))
 ((next-complex-function "z/z") (z-map [1 1])) ;; => error, can't divide 2 complexs
-((next-complex-function "exp(z)") (z-map [1 1])) ;; => error, exponential not allowed
+((next-complex-function "exp(z)") (z-map [1 1])) ;; => error, exp not allowed
+((next-complex-function "cos(z)") (z-map [1 1])) ;; => error, cos not allowed
+((next-complex-function "arccos(z)") (z-map [1 1])) ;; => error, arccos not allowed
+((next-complex-function "sin(z)") (z-map [1 1])) ;; => error, sin not allowed
+((next-complex-function "arcsin(z)") (z-map [1 1])) ;; => error, arcsin not allowed
 
 ;; exp
 
