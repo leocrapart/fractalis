@@ -26,6 +26,28 @@
 ;; eval math string 
 ;; https://stackoverflow.com/questions/35675832/evaluate-math-string-in-clojure
 
+;; new plan
+;; process the string recursively
+;; make tree out of expression
+;; eval each expression
+;; last eval is the function
+
+;; zero fn : remove spaces
+;; first fn : find first leaf expression
+;; second fn : next-complex-function [leaf-expr]
+
+;; (first-leaf-expr "((2z+1)*z)+1") 
+;; => 2z+1 
+;; => (+ (* 2 z) 1)
+;; => (add-complex (multiply-complex 2 z) 1)
+
+;; plan : 
+;; if I can go from opening paren to closing 
+;; without encountering an opening paren, it's good
+(defn leaf-paren? [pos equation])
+
+(defn first-leaf-exp [equation])
+
 (defn next-complex-function [string]
 	(let [first (first string)]
 		(if (= string "z*z")
@@ -49,11 +71,11 @@
 ((next-complex-function "z+z") (z-map [1 1]))
 ((next-complex-function "z-z") (z-map [1 1]))
 ((next-complex-function "z^2") (z-map [1 1]))
-((next-complex-function "z/z") (z-map [1 1])) ;; => error, can't divide 2 complexs
-((next-complex-function "exp(z)") (z-map [1 1])) ;; => error, exp not allowed
-((next-complex-function "cos(z)") (z-map [1 1])) ;; => error, cos not allowed
+((next-complex-function "z/z") (z-map [1 1]))       ;; => error, can't divide 2 complexs
+((next-complex-function "exp(z)") (z-map [1 1]))    ;; => error, exp not allowed
+((next-complex-function "cos(z)") (z-map [1 1]))    ;; => error, cos not allowed
 ((next-complex-function "arccos(z)") (z-map [1 1])) ;; => error, arccos not allowed
-((next-complex-function "sin(z)") (z-map [1 1])) ;; => error, sin not allowed
+((next-complex-function "sin(z)") (z-map [1 1]))    ;; => error, sin not allowed
 ((next-complex-function "arcsin(z)") (z-map [1 1])) ;; => error, arcsin not allowed
 
 ;; exp
