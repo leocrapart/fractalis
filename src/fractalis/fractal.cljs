@@ -36,7 +36,7 @@
 ;; first fn : find first leaf expression
 ;; second fn : next-complex-function [leaf-expr]
 
-;; (first-leaf-expr "((2z+1)*z)+1") 
+;; (first-leaf-expr "((2z+1)*z)+1)" 
 ;; => 2z+1 
 ;; => (+ (* 2 z) 1)
 ;; => (add-complex (multiply-complex 2 z) 1)
@@ -44,7 +44,20 @@
 ;; plan : 
 ;; if I can go from opening paren to closing 
 ;; without encountering an opening paren, it's good
-(defn leaf-paren? [pos equation])
+
+(defn not-closing-paren? [char]
+	(not= ")" char))
+
+;; wip
+(defn leaf-paren? [pos equation]
+	(let [after-paren (drop pos equation)
+				content (take-while not-closing-paren? after-paren)]
+		content))
+		
+
+(leaf-paren? 0 "((2z+1)*z)+1)") ;;=> false
+(leaf-paren? 1 "((2z+1)*z)+1)") ;;=> true
+
 
 (defn first-leaf-exp [equation])
 
