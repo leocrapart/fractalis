@@ -46,20 +46,68 @@
 ;; without encountering an opening paren, it's good
 
 (defn not-closing-paren? [char]
-	(not= ")" char))
+	(not= \) char))
 
-;; wip
+(defn not-opening-paren? [char]
+	(not= \( char))
+
+(defn contains-opening-paren? [string]
+	(clojure.string/includes? string "("))
+
+(defn contains-closing-paren? [string]
+	(clojure.string/includes? string ")"))
+
 (defn leaf-paren? [pos equation]
-	(let [after-paren (drop pos equation)
-				content (take-while not-closing-paren? after-paren)]
-		content))
-		
+	(let [char (nth equation pos)
+				after-paren (drop (+ 1 pos) equation)
+				content-seq (take-while not-closing-paren? after-paren)
+				content (apply str content-seq)
+				]
+		(if (not-opening-paren? char)
+			false
+			(if (contains-opening-paren? content)
+				false
+				true))))
+	
 
 (leaf-paren? 0 "((2z+1)*z)+1)") ;;=> false
 (leaf-paren? 1 "((2z+1)*z)+1)") ;;=> true
+(leaf-paren? 6 "((2z+1)*z)+1)") ;;=> false
+(leaf-paren? 8 "((2z+1)*(z+1))") ;;=> true
 
 
-(defn first-leaf-exp [equation])
+(defn first-leaf-paren-pos [equation]
+	(first 
+		(filter #(leaf-paren? % equation) 
+			(range (count equation)))))
+
+
+(first-leaf-paren-pos "((2z+1)*z)+1)")
+
+(defn no-paren-equation? [equation]
+	(and (not (contains-opening-paren? equation)) 
+		(not (contains-closing-paren? equation))))
+
+(no-paren-equation? "2z+1)")
+
+
+(defn first-leaf-expr [equation]
+	(if (no-paren-equation? equation)
+		equation
+		(let [pos (first-leaf-paren-pos equation)
+					after-paren (drop (+ 1 pos) equation)
+					content-seq (take-while not-closing-paren? after-paren)
+					leaf-expr (apply str content-seq)
+					]
+			leaf-expr
+			)))
+
+(first-leaf-expr "((2z+1)*z)+1)") ;;=> 2z+1
+(first-leaf-expr "(2z+1)") ;; => 2z+1
+(first-leaf-expr "2z+1") ;; => 2z+1
+(first-leaf-expr "2z+1)") ;; => error
+
+
 
 (defn next-complex-function [string]
 	(let [first (first string)]
