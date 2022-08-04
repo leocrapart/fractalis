@@ -1,5 +1,9 @@
 (ns fractalis.equation-parser)
 
+;; end goal : 
+;; (parse-eq "2z+1")
+;; (parse-eq "(2z+1)(2z+2)")
+;; (parse-eq "((2z+1)+1)(2z+2)")
 
 
 ;; input : string
@@ -91,6 +95,7 @@
 
 ;; (2z+1)
 
+;; not used for now
 (defn remove-paren [eq]
 	(if (and (= \( (first eq))
 					(= \) (last eq)))
@@ -161,14 +166,14 @@
 
 
 
-(defn red [acc b]
+(defn add-*-if-needed [acc b]
 	(if (should-add-* acc b)
 		(add-to-string acc (str "*" b))
 		(add-to-string acc b)))
 
-(red "2" "z")
-(red "2*z" "+")
-(red "2*z+" "1")
+(add-*-if-needed "2" "z")
+(add-*-if-needed "2*z" "+")
+(add-*-if-needed "2*z+" "1")
 
 (defn remove-first-char-if-* [eq]
 	(if (= \* (first eq))
@@ -182,17 +187,17 @@
 (defn add-*-where-needed [eq]
 	(apply str
 		(remove-first-char-if-*
-			(reduce red "" (vec eq)))))
+			(reduce add-*-if-needed "" (vec eq)))))
 
 (add-*-where-needed "2z+1")
 (add-*-where-needed "(2z+1)(2z+1)")
 
 ;; end goal of decompose: 
 ;; sequential list of operations
-;; recursive
+;; recursive if needed
+;; best if not recursive
 (defn decompose [eq]
 	(-> eq
-		remove-paren
 		add-*-where-needed))
 
 
@@ -200,6 +205,10 @@
 (decompose "(2z+1)")
 (decompose "(2z+1)(2z+1)")
 
+
+;;decompose in leaves-exprs
+;;leaf-expr-to-fn
+;;compose-leaves-exprs
 
 
 
