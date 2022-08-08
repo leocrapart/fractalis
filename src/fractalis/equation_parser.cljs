@@ -204,19 +204,33 @@
 (decompose "2z+1")
 (decompose "(2z+1)")
 (decompose "(2z+1)(2z+1)")
-(decompose "((2z+1)(2z+1))")   ;;excess paren
-(decompose "(((2z+1)(2z+1)))") ;;excess paren 2
+(decompose "(2z+1)^2") ;; should be same as (2z+1)(2z+1)
+
+(decompose "(z)")   ;;excess paren
+(decompose "((z))") ;;excess paren 2
+(decompose "(((z)))") ;;excess paren 3
+(decompose "((((z))))") ;;excess paren 4
+(decompose "(((())))") ;; error
+
 (decompose "(2z+1)^2(2z+1)")   ;;priority power and paren multiply
+
 (decompose "z+1*2") ;; priority + and *
 (decompose "(z+1)*2") ;; priority + and * with paren
 (decompose "z-1*2") ;; priority - and *
+(decompose "(z-1)*2") ;; priority - and * with paren
+(decompose "z+1^2") ;; priority + and ^
+(decompose "(z+1)^2") ;; priority + and ^ with paren
+(decompose "z-1^2") ;; priority - and ^
+(decompose "(z-1)^2") ;; priority - and ^ with paren
+(decompose "z*1^2") ;; priority * and ^
+(decompose "(z*1)^2") ;; priority * and ^ with paren
+
 (decompose "z/2") ;; division not allowed, multiply by real if needed
 (decompose "z*0.5") ;; real multiplication
 (decompose "-1*z") ;; minus as first symbol, yet legit equation
 (decompose "-z") ;; should be same as -1*z
 (decompose "+z") ;; plus as first symbol, yet legit equation
 (decompose "+z") ;; should be same as +z
-
 
 
 
