@@ -202,7 +202,7 @@
 
 
 (decompose "2z+1")
-(decompose "(2z+1)")
+(decompose "(2z+1)") ;; should be same as 2z+1
 (decompose "(2z+1)(2z+1)")
 (decompose "(2z+1)^2") ;; should be same as (2z+1)(2z+1)
 
