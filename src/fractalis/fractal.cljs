@@ -1,43 +1,6 @@
 (ns fractalis.fractal)
 
 
-(defn next-complex-function [string]
-	(let [first (first string)]
-		(if (= string "z*z")
-			(fn [z]
-				(multiply-complex z z))
-			(if (= string "z+z")
-				(fn [z]
-					(add-complex z z)))
-			(if (= string "z-z")
-				(fn [z]
-					(subtract-complex z z)))
-			)))
-
-([1 2] 0)
-
-(defn z-map [z-vector]
-	{:real (z-vector 0)
-	 :imaginary (z-vector 1)})
-
-((next-complex-function "z*z") (z-map [2 0]))
-((next-complex-function "z+z") (z-map [1 1]))
-((next-complex-function "z-z") (z-map [1 1]))
-((next-complex-function "z^2") (z-map [1 1]))
-((next-complex-function "z/z") (z-map [1 1]))       ;; => error, can't divide 2 complexs
-((next-complex-function "exp(z)") (z-map [1 1]))    ;; => error, exp not allowed
-((next-complex-function "cos(z)") (z-map [1 1]))    ;; => error, cos not allowed
-((next-complex-function "arccos(z)") (z-map [1 1])) ;; => error, arccos not allowed
-((next-complex-function "sin(z)") (z-map [1 1]))    ;; => error, sin not allowed
-((next-complex-function "arcsin(z)") (z-map [1 1])) ;; => error, arcsin not allowed
-
-;; exp
-
-
-;; api 
-;;mandelbrot-set [delta]
-;;points-to-check [delta]
-
 (defn subtract-complex [z1 z2]
   {:real (- (z1 :real) (z2 :real))
    :imaginary (- (z1 :imaginary) (z2 :imaginary))})
@@ -52,6 +15,45 @@
             (* (z1 :imaginary) (z2 :imaginary)))
    :imaginary (+ (* (z1 :real) (z2 :imaginary))
                  (* (z1 :imaginary) (z2 :real)))})
+
+(defn next-complex-function [string]
+	(let [first (first string)]
+		(if (= string "z*z")
+			(fn [z]
+				(multiply-complex z z))
+			(if (= string "z+z")
+				(fn [z]
+					(add-complex z z))
+				(if (= string "z-z")
+					(fn [z]
+						(subtract-complex z z)))))
+			))
+
+([1 2] 0)
+
+(defn z-map [z-vector]
+	{:real (z-vector 0)
+	 :imaginary (z-vector 1)})
+
+; ((next-complex-function "z*z") (z-map [2 0]))
+; ((next-complex-function "z+z") (z-map [1 1]))
+; ((next-complex-function "z-z") (z-map [1 1]))
+; ((next-complex-function "z^2") (z-map [1 1]))
+; ((next-complex-function "z/z") (z-map [1 1]))       ;; => error, can't divide 2 complexs
+; ((next-complex-function "exp(z)") (z-map [1 1]))    ;; => error, exp not allowed
+; ((next-complex-function "cos(z)") (z-map [1 1]))    ;; => error, cos not allowed
+; ((next-complex-function "arccos(z)") (z-map [1 1])) ;; => error, arccos not allowed
+; ((next-complex-function "sin(z)") (z-map [1 1]))    ;; => error, sin not allowed
+; ((next-complex-function "arcsin(z)") (z-map [1 1])) ;; => error, arcsin not allowed
+
+;; exp
+
+
+;; api 
+;;mandelbrot-set [delta]
+;;points-to-check [delta]
+
+
 
 (defn next-complex-number
 	([c]
@@ -347,12 +349,6 @@
 
 
 (row-indexes 1 0)
-
-
-
-(defn points)
-
-
 
 
 

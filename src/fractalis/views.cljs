@@ -154,12 +154,16 @@ data2
 (defn draw-pixel [ctx point]
 	(.fillRect ctx (point 0) (point 1) 1 1))
 
-(defn draw-cube [ctx point]
-	(.fillRect ctx (point 0) (point 1) 10 10))
-
 (defn draw-pixels [ctx points]
 	(doseq [point points]
 		(draw-pixel ctx point)))
+
+(defn draw-cube [ctx point]
+	(.fillRect ctx (point 0) (point 1) 6 6))
+
+(defn draw-cubes-at [ctx points]
+	(doseq [point points]
+		(draw-cube ctx point)))
 
 
 
@@ -323,7 +327,7 @@ data2
 											:max-width 400
 											:min-height 0
 											:max-height 400}]
-		   [:canvas {:width (dimensions :max-width)
+		   [:canvas#canvas-1 {:width (dimensions :max-width)
 		   					 :height (dimensions :max-height)	   	         
 		   					 :ref (fn [el]
 			        					(let [ctx (.getContext el "2d")]
@@ -341,6 +345,7 @@ data2
 	   
 	   [:div "custom canva"]
 	   ; [custom-canvas]
+	   [:div#canvas-2 ""]
 	   [Canvas {:width "100%"
 			        :height "100%"
 			        :render (fn [ctx [w h]]
